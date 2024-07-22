@@ -355,7 +355,10 @@ o también puedes usar:
 systemctl restart proftpd.service
 
 ----------
-¿Cuándo necesitaríamos hacer un «reload» para recargar el servicio proFTPd? Cuando hagamos un cambio en la configuración, para que automáticamente la aplique. En el caso de utilizar SysVinit para hacer el «reload», deberás poner lo siguiente:
+¿Cuándo necesitaríamos hacer un «reload» para recargar el 
+servicio proFTPd? Cuando hagamos un cambio en la configuración,
+ para que automáticamente la aplique. En el caso de utilizar 
+ SysVinit para hacer el «reload», deberás poner lo siguiente:
 /etc/init.d/proftpd reload
 
 o también puedes usar:
@@ -371,22 +374,36 @@ Ver status: service proftpd status
 
 Para activarlo con el sistema: systemctl enable proftpd
 ----------
-El archivo de configuración principal de proFTPd se encuentra en /etc/proftpd/proftpd.conf. Desde aquí deberemos configurar la mayoría de los aspectos de nuestro servidor FTP. Lo primero que debemos hacer es establecer una carpeta como directorio principal para todos los usuarios del FTP. Para ello, abriremos con nuestro editor de texto preferido el archivo de configuración anterior:
-sudo gedit /etc/proftpd/proftpd.conf
-----
+El archivo de configuración principal de proFTPd se encuentra 
+en /etc/proftpd/proftpd.conf. Desde aquí deberemos configurar
+ la mayoría de los aspectos de nuestro servidor FTP. 
+ Lo primero que debemos hacer es establecer una carpeta como 
+ directorio principal para todos los usuarios del FTP. 
+ Para ello, abriremos con nuestro editor de texto preferido 
+ el archivo de configuración anterior.
 Con este comando entramos el archivo de texto, para cambiar la config: 
 
 		sudo gedit /etc/proftpd/proftpd.conf
 ----		
-Una vez allí, buscaremos la línea comentada «DefaultRoot» y la descomentamos borrando la almohadilla #. Esto nos va a permitir que cuando cada usuario acceda a su cuenta del FTP, estos accederán directamente a su carpeta «home».
+Una vez allí, buscaremos la línea comentada «DefaultRoot» y la 
+descomentamos borrando la almohadilla #. Esto nos va a permitir 
+que cuando cada usuario acceda a su cuenta del FTP, estos 
+accederán directamente a su carpeta «home».
 ----
-Si queremos que todos los usuarios que inicien sesión accedan por defecto a una misma carpeta, debemos cambiar el parámetro DefaultRoot y añadir la ruta a la que queramos que accedan. Por ejemplo, en nuestro caso hemos creado una carpeta llamada «proftpd» dentro de /home/ y queremos que todos los usuarios por defecto accedan a ella. El archivo de configuración quedará de la siguiente manera:
+Si queremos que todos los usuarios que inicien sesión accedan
+ por defecto a una misma carpeta, debemos cambiar el parámetro 
+ DefaultRoot y añadir la ruta a la que queramos que accedan. 
+ Por ejemplo, en nuestro caso hemos creado una carpeta llamada «proftpd» 
+ dentro de /home/ y queremos que todos los usuarios por defecto
+  accedan a ella. El archivo de configuración quedará de la siguiente manera:
 
 	DefaultRoot /home/proftpd ( podemos agregar abajo mas config).
 ----
 
 
-También podemos hacer que todos los usuarios accedan por defecto a una carpeta (como en el paso anterior) salvo un usuario que queremos que acceda a otra o, simplemente, tenga permiso de administrador y pueda acceder a todo el disco.
+También podemos hacer que todos los usuarios accedan por defecto a una carpeta
+ (como en el paso anterior) salvo un usuario que queremos que acceda a otra o, 
+ simplemente, tenga permiso de administrador y pueda acceder a todo el disco.
 
 Para ello debemos modificar los siguientes aspectos:
 
@@ -394,38 +411,50 @@ El parámetro DefaultRoot tiene la siguiente estructura:
 
 DefaultRoot [directorio] [grupo de usuarios que tendrán ese directorio por defecto] [Grupo de usuarios a los que no se les aplicará ese directorio]
 
-Es decir, vamos a poner el ejemplo de tener 2 usuarios, A y B. A únicamente podrá acceder a su directorio mientras que B podrá acceder a todo el disco duro. Debemos añadir las siguientes líneas:
+Es decir, vamos a poner el ejemplo de tener 2 usuarios, A y B. A únicamente podrá
+ acceder a su directorio mientras que B podrá acceder a todo el disco duro.
+ Debemos añadir las siguientes líneas:
 DefaultRoot /home/ftp A 
 
 
 ----
-De esta manera, cuando el usuario B acceder al servidor tendrá control completo sobre todos los archivos del disco, mientras que si es A quien accede, únicamente podrá gestionar su carpeta.
+De esta manera, cuando el usuario B acceder al servidor tendrá control 
+completo sobre todos los archivos del disco, mientras que si es A quien
+ accede, únicamente podrá gestionar su carpeta.
 
 Otros parámetros interesantes para configurar son:
 
     ServerName: nos permite establecer un nombre al servidor.
-    AccessGrantMsg: Mensaje de bienvenida. (Hay que añadirlo manualmente al final del archivo).
-    AccessDenyMsg: Mensaje de error al iniciar. (Hay que añadirlo manualmente al final del archivo).
-
-
+    AccessGrantMsg: Mensaje de bienvenida. (Hay que añadirlo manualmente
+ al final del archivo).
+    AccessDenyMsg: Mensaje de error al iniciar. (Hay que añadirlo 
+manualmente al final del archivo).
 
 ----
-A continuación, reiniciaremos el servidor para que se apliquen los cambios realizados tecleando:
+A continuación, reiniciaremos el servidor para que se apliquen los cambios
+ realizados tecleando:
 sudo /etc/init.d/proftpd restart
 
 ----
 
 Crear usuarios y contraseñas para el FTP
 
-Ahora vamos a mostrar cómo podemos crear un usuario y poder así gestionar el contenido de una manera sencilla y rápida. Esto es algo que podemos hacer en cualquier momento y crear tantos usuarios como queramos. Además, hay que asignar un nombre, contraseña, directorio y también una cuota de almacenamiento, aunque esto es voluntario y podemos dejarlo simplemente en ilimitado.
+Ahora vamos a mostrar cómo podemos crear un usuario y poder así gestionar 
+el contenido de una manera sencilla y rápida. Esto es algo que podemos hacer
+ en cualquier momento y crear tantos usuarios como queramos. Además, hay que
+  asignar un nombre, contraseña, directorio y también una cuota de
+almacenamiento, aunque esto es voluntario y podemos dejarlo simplemente
+ en ilimitado.
 
 --------------------
 USO DE FILEZILLA: 
 
-FileZilla está disponible en los repositorios Ubuntu predeterminados. Puede instalarlo usando el gestor de paquetes APT.
+FileZilla está disponible en los repositorios Ubuntu predeterminados. 
+Puede instalarlo usando el gestor de paquetes APT.
 
     Abra una ventana terminal.
-    Actualice la lista de paquetes para asegurarse de que tiene la última información:
+    Actualice la lista de paquetes para asegurarse de que tiene
+la última información:
 
     sudo apt update
 
@@ -436,35 +465,63 @@ FileZilla está disponible en los repositorios Ubuntu predeterminados. Puede ins
         Confirme la instalación escribiendo 'Y' cuando se le solicite.
         FileZilla está instalado en su sistema Ubuntu 22.04.
     Lanzamiento de FileZilla:
-    Puede lanzar FileZilla desde el menú de la aplicación o ejecutando el siguiente comando en el terminal:
+    Puede lanzar FileZilla desde el menú de la aplicación o ejecutando el
+	 siguiente comando en el terminal:
 
     filezilla
 
 
-    Esto abrirá el cliente FileZilla FTP, lo que le permitirá conectarse a servidores remotos.
+    Esto abrirá el cliente FileZilla FTP, lo que le permitirá conectarse a
+servidores remotos.
 
 
-Tenga en cuenta: Se recomienda que utilice el gestor de paquetes de su distribución.
+Tenga en cuenta: Se recomienda que utilice el gestor de paquetes
+ de su distribución.
 
-Si estás usando GNU/Linux, también puedes intentar usar los binarios precompilados. Después de extraer los archivos a cualquier ubicación (la ubicación no importa, FileZilla puede detectar su propio prefijo de instalación), puede iniciar el programa usando el ejecutable filezilla en el contenedor / subdirectorio. Tenga en cuenta que debido a las diferencias en las distribuciones, los binarios proporcionados podrían no funcionar en su sistema.
+Si estás usando GNU/Linux, también puedes intentar usar los binarios
+precompilados. Después de extraer los archivos a cualquier ubicación
+ (la ubicación no importa, FileZilla puede detectar su propio 
+ prefijo de instalación), puede iniciar el programa usando el 
+ ejecutable filezilla en el contenedor / subdirectorio. Tenga en cuenta
+  que debido a las diferencias en las distribuciones, los binarios
+   proporcionados podrían no funcionar en su sistema.
 
 Alternativamente también puede compilar FileZilla desde la fuente.
 ---------
-A través de Cuenta de FTP podremos administrar las cuentas que ya hemos creado o también crear una nueva, que es lo que nos interesa. Veremos automáticamente la opción de Añadir una cuenta de FTP. Tendremos que rellenar los datos como nos aparece en la imagen de abajo.
+A través de Cuenta de FTP podremos administrar las cuentas que ya hemos
+ creado o también crear una nueva, que es lo que nos interesa. Veremos
+  automáticamente la opción de Añadir una cuenta de FTP. Tendremos que
+   rellenar los datos como nos aparece en la imagen de abajo.
 ---------
-Para conectarnos al servidor FTP es fundamental contar con un usuario y contraseña, de hecho, proFTPd nos permite crear varios usuarios virtuales, esto significa que no tendremos que crearlos en el propio sistema operativo Linux para que posteriormente se conecten al servidor FTP. Esto es una de las características más interesantes de este FTP, no obstante, lo más normal sería crear diferentes usuarios y grupos con diferentes permisos como si fuera una carpeta compartida vía Samba.
+Para conectarnos al servidor FTP es fundamental contar con un
+ usuario y contraseña, de hecho, proFTPd nos permite crear varios usuarios
+  virtuales, esto significa que no tendremos que crearlos en el propio
+   sistema operativo Linux para que posteriormente se conecten al servidor
+ FTP. Esto es una de las características más interesantes de este FTP, 
+ no obstante, lo más normal sería crear diferentes usuarios y grupos
+  con diferentes permisos como si fuera una carpeta compartida vía Samba.
 --------
 Para cambiar pass de users: sudo passwd usuario
 --------
-A partir de ahora, «usuario» podrá conectarse al FTP y accederá, por defecto, a la carpeta especificada en DefaultRoot.
+A partir de ahora, «usuario» podrá conectarse al FTP y accederá, por defecto,
+ a la carpeta especificada en DefaultRoot.
 
     Gestionar el tamaño disponible
 
-Podemos crear tantas cuentas como queramos, siempre y cuando no superen el almacenamiento disponible. Hemos visto que a la hora de crear una nueva cuenta FTP para el hosting podemos asignarle un tamaño máximo. Esto es útil si no queremos problemas en nuestro sitio al quedarnos sin espacio disponible. Ya sabemos que esto puede ser limitado, según el hosting que tengamos contratado podemos tener más o menos espacio disponible.
-
+Podemos crear tantas cuentas como queramos, siempre y cuando no
+ superen el almacenamiento disponible. Hemos visto que a la hora de
+  crear una nueva cuenta FTP para el hosting podemos asignarle un 
+  tamaño máximo. Esto es útil si no queremos problemas en nuestro
+   sitio al quedarnos sin espacio disponible. Ya sabemos que esto 
+   puede ser limitado, según el hosting que tengamos contratado 
+   podemos tener más o menos espacio disponible.
+-----------
 Permitir y denegar usuarios
 
-proFTPd nos permite controlar los usuarios que pueden y no pueden iniciar sesión en nuestro servidor de una forma muy sencilla. Para ello, abrimos el archivo de configuración y añadiremos lo siguiente al final de este:
+proFTPd nos permite controlar los usuarios que pueden y no pueden 
+iniciar sesión en nuestro servidor de una forma muy sencilla. Para 
+ello, abrimos el archivo de configuración y añadiremos lo siguiente
+ al final de este:
 <Limit LOGIN> 
 -------
 Otros parámetros que podemos utilizar aquí son:
@@ -474,33 +531,77 @@ Otros parámetros que podemos utilizar aquí son:
     DenyAll: Bloqueamos el acceso a todos los usuarios salvo a los que especifiquemos con AllowUser.
     AllowAll: Permite que los usuarios como «anonymous» se conecten al FTP.
 
-Dependiendo de lo que nos interese, podremos permitir o denegar los diferentes grupos de usuarios y usuarios, este servidor FTP es realmente muy configurable. Además, si queremos permitir las conexiones anónimas a nuestro FTP debemos añadir dentro del grupo anterior el parámetro AllowAll, quedando de la siguiente manera:
+Dependiendo de lo que nos interese, podremos permitir o denegar
+ los diferentes grupos de usuarios y usuarios, este servidor FTP es 
+ realmente muy configurable. Además, si queremos permitir 
+ las conexiones anónimas a nuestro FTP debemos añadir dentro 
+ del grupo anterior el parámetro AllowAll, quedando de la siguiente manera:
 
 <Limit LOGIN>
 
-También podríamos poner un «DenyAll» en la parte final, con el objetivo de bloquear cualquier intento de acceso de los usuarios que tengamos excepto a los usuarios específicamente permitidos.
+También podríamos poner un «DenyAll» en la parte final, con el objetivo
+ de bloquear cualquier intento de acceso de los usuarios que tengamos
+  excepto a los usuarios específicamente permitidos.
 ------
-Para añadir un usuario nuevo debemos crear a este una cuenta de usuario en nuestro Ubuntu y accederá al servidor FTP con las credenciales de su cuenta.
+Para añadir un usuario nuevo debemos crear a este una cuenta de
+ usuario en nuestro Ubuntu y accederá al servidor FTP con las credenciales
+  de su cuenta.
 ------
 Otros comandos de utilidad para proFTPd
 
-Podemos consultar un registro de inicio de sesión y actividad con el siguiente parámetro:
+Podemos consultar un registro de inicio de sesión y actividad con el 
+siguiente parámetro:
 sudo cat /var/log/proftpd/proftpd.log
 
-Este comando lo que hace es mostrarnos todo el archivo de log del servidor FTP, en caso de querer mostrar las últimas líneas, podremos hacer uso del popular comando «tail», e incluso podremos ver los logs en tiempo real haciendo uso de «tail -f /var/log/proftpd/proftpd.log» para ver todos los registros en tiempo real.
+Este comando lo que hace es mostrarnos todo el archivo de log
+ del servidor FTP, en caso de querer mostrar las últimas líneas, 
+ podremos hacer uso del popular comando «tail», e incluso podremos ver 
+ los logs en tiempo real haciendo uso de:
+ 	    «tail -f /var/log/proftpd/proftpd.log» 
+	para ver todos los registros en tiempo real.
 
-Podemos consultar los usuarios que están conectados a nuestro servidor FTP en tiempo real con los siguientes comandos:   ftpwho   y    ftptop
+Podemos consultar los usuarios que están conectados a nuestro servidor
+ FTP en tiempo real con los siguientes comandos:   ftpwho   y    ftptop
 ---------
 Configurar FTPES en el servidor proFTPd para tener seguridad
 
-FTPES se conoce como FTP Explícito, este protocolo nos permite conectanors al puerto TCP 21 del servidor FTP, y antes de autenticarnos y empezar a transferir información, se le añade una capa TLS 1.2 o TLS 1.3 para proteger toda la información. Por tanto, con FTPES seguiremos haciendo uso del popular puerto 21, o el puerto que vosotros queráis utilizar. También tenemos la posibilidad de solo permitir conexiones FTPES, y dejar las conexiones FTP de lado, para que tanto la autenticación como la transferencia de ficheros sean seguros. Debido a la utilización del protocolo TLS/SSL, deberemos configurar en el servidor un certificado RSA o similar, con su clave pública y su clave privada, para poder levantar correctamente el servicio de FTP.
+FTPES se conoce como FTP Explícito, este protocolo nos permite
+ conectanors al puerto TCP 21 del servidor FTP, y antes de
+  autenticarnos y empezar a transferir información, se le añade
+   una capa TLS 1.2 o TLS 1.3 para proteger toda la información. 
+   Por tanto, con FTPES seguiremos haciendo uso del popular puerto 21,
+ o el puerto que vosotros queráis utilizar. También tenemos la 
+ posibilidad de solo permitir conexiones FTPES, y dejar las conexiones
+  FTP de lado, para que tanto la autenticación como la transferencia 
+  de ficheros sean seguros. Debido a la utilización del protocolo
+   TLS/SSL, deberemos configurar en el servidor un certificado RSA 
+   o similar, con su clave pública y su clave privada, para poder 
+   levantar correctamente el servicio de FTP.
 
-Lo primero que debemos hacer es activar la directiva en el fichero de configuración principal de proFTPd, descomentando la parte de «Include /etc/proftpd/tls.conf», tal y como podéis ver a continuación:
+Lo primero que debemos hacer es activar la directiva en el fichero
+ de configuración principal de proFTPd, descomentando la parte de
+  «Include /etc/proftpd/tls.conf», tal y como podéis ver a continuación:
 
 ---------------------------
-Xampp para apache2: Al activar xampp, y levantar en buscador con: localhost: se lee lo siguiente: 
-			Se activan vinculando simbólicamente los archivos de configuración disponibles desde sus respectivas contrapartes *-available/. Estos deben administrarse utilizando nuestros ayudantes a2enmod, a2dismod, a2ensite, a2dissite y a2enconf, a2disconf. Consulte sus respectivas páginas de manual para obtener información detallada.
-El binario se llama apache2 y se administra mediante systemd, por lo que para iniciar/detener el servicio use systemctl start apache2 y systemctl stop apache2, y use systemctl status apache2 y journalctl -u apache2 para verificar el estado. system y apache2ctl también se pueden utilizar para la gestión de servicios si se desea. Llamar a /usr/bin/apache2 directamente no funcionará con la configuración predeterminada.
+Xampp para apache2: Al activar xampp, y levantar en buscador con: 
+localhost: se lee lo siguiente: 
+			Se activan vinculando simbólicamente los archivos de 
+			configuración disponibles desde sus respectivas contrapartes
+ *-available/. Estos deben administrarse utilizando nuestros ayudantes
+  a2enmod, a2dismod, a2ensite, a2dissite y a2enconf, a2disconf. 
+  Consulte sus respectivas páginas de manual para obtener información
+ detallada. El binario se llama apache2 y se administra mediante systemd,
+  por lo que para iniciar/detener el servicio use:
+  
+  	 systemctl start apache2    y    systemctl stop apache2, 
+	 
+y use:   systemctl status apache2     y      journalctl -u apache2 
+
+para verificar el estado. ----->  system y apache2ctl
+
+ también se pueden utilizar para la gestión de servicios si se desea. 
+ Llamar a /usr/bin/apache2 directamente no funcionará con la
+  configuración predeterminada.
 ---------------------------
 
 
