@@ -58,7 +58,251 @@ $ php composer help install
 Utiliza el comando help para ver información sobre el comando solicitado.
 
 $ php composer help install
------------------------------------------------
+--------------------------------------------------------
+Instalacion pila LAMP: ( no es lo mismo que lampp, que es de Xampp ).
+
+LAMP es un acrónimo de Linux, Apache, MySQL y PHP; estos cuatro componentes en el servidor LAMP o la pila LAMP funcionan en tándem para proporcionar un entorno estable y de alto rendimiento para ejecutar aplicaciones web.
+------
+LAMP stack es una pila de soluciones ampliamente utilizada para el alojamiento de aplicaciones web. A continuación se presenta un desglose de cada componente en la pila LAMP y una breve explicación de para qué se utiliza cada uno.
+
+			Linux - Este sistema operativo de código abierto sustenta la pila de software. Es popular en las aplicaciones de alojamiento gracias a su alta estabilidad y rendimiento en comparación con otros sistemas operativos.
+
+			Apache - Apache es un servidor web HTTP gratuito y de código abierto que sirve peticiones HTTP. pone las aplicaciones a disposición de los clientes en la parte delantera a través de un navegador web.
+
+			MySQL es un popular y de código abierto sistema de gestión de bases de datos relacionales para almacenar datos que se pueden consultar usando SQL. Es una elección perfecta para almacenar datos estructurados organizados en filas y columnas dentro de mesas.
+
+			PHP es un acrónimo recursivo para PHP: Hypertext Preprocessor. Es un lenguaje de scripting de código abierto de uso general utilizado principalmente para el desarrollo web.
+
+			Para seguir en esta guía, asegásese de tener la siguiente lista de requisitos en su lugar.
+
+    Una instancia de servidor en Ubuntu 22.04 LTS con un usuario de sudo configurado;
+    Un FQDN (Fully Qualified Domain Name) apuntando a la dirección IP pública del servidor. Aunque no es obligatorio, esto será útil para configurar a un presentador virtual de Apache. Para esta guía, vamos a utilizar domain.coma efectos de demostración.
+
+			Paso 1: Instalar servidor web Apache
+
+					Como primer paso, instalaremos el servidor Web Apache. Para empezar, inicie sesión en su instancia de servidor. El primer paso es actualizar la caché del gestor de paquetes y asegurar que el índice de paquetes esté al día.
+
+			sudo apt update
+
+			Cuando se le solicite, proporcione su contraseña y pulse ENTRA.
+
+			A continuación, instale el servidor web Apache desde el repositorio Ubuntu predeterminado utilizando el gestor de paquetes APT.
+
+			sudo apt install apache2 -y
+
+			El comando instala Apache junto a todas las bibliotecas y dependencias necesarias. De forma predeterminada, Apache comienza automáticamente tras la instalación. Para confirmarlo, ejecute el comando:
+
+			sudo systemctl status apache2
+
+		Si tiene activado un cortafuegos UFW, debe ajustar los ajustes de cortafuegos para permitir el tráfico HTTP. UFW, abreviado de Firewall sin complicaciones, es la configuración predeterminada de Firewall de Ubuntu.
+
+		Para permitir el tráfico HTTP, es necesario permitir conexiones en el puerto 80. Para lograrlo, ejecute el siguiente comando:
+
+		sudo ufw allow 80/tcp
+
+		Para aplicar los cambios, vuelva a cargar el cortafugaspe.
+
+		sudo ufw reload ---> para activar cortafuegos: sudo ufw enable (disable)
+
+		Usage: ufw COMMAND
+
+Commands:
+ enable                          enables the firewall
+ disable                         disables the firewall
+ default ARG                     set default policy
+ logging LEVEL                   set logging to LEVEL
+ allow ARGS                      add allow rule
+ deny ARGS                       add deny rule
+ reject ARGS                     add reject rule
+ limit ARGS                      add limit rule
+ delete RULE|NUM                 delete RULE
+ insert NUM RULE                 insert RULE at NUM
+ prepend RULE                    prepend RULE
+ route RULE                      add route RULE
+ route delete RULE|NUM           delete route RULE
+ route insert NUM RULE           insert route RULE at NUM
+ reload                          reload firewall
+ reset                           reset firewall
+ status                          show firewall status
+ status numbered                 show firewall status as numbered list of RULES
+ status verbose                  show verbose firewall status
+
+Para confirmar el estado del cortafugalos, ejecute el siguiente comando:
+
+sudo ufw status
+
+Por la salida, podemos ver que el puerto 80 está abierto en el firewall, y se permite el tráfico HTTP. Puede confirmarlo visitando la dirección IP del servidor.
+
+http://server-ip-address
+
+
+Paso 2: Instalar el servidor de bases de datos
+
+	En este paso, instalaremos el servidor de bases de datos MariaDB en lugar de MySQL. MariaDB proporciona un rico conjunto de características y un rendimiento mejorado que lo convierte en un reemplazo perfecto para MySQL.
+
+MariaDB se aloje en los repositorios de Ubuntu por defecto, y puede instalarlo de inmediato de la siguiente manera.
+
+sudo apt install mariadb-server mariadb-client -y
+
+				Sin embargo, el repositorio de Ubuntu no proporciona la versión más reciente de MariaDB, que instala MariaDB 10.6. Para instalar la última versión, instúrelo desde los repositorios MariaDB.
+
+				Para hacer esto, asegúrese de añadir la clave de ficha de GPG.
+
+				sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
+
+Con la tecla GPG en su lugar, agregue el repositorio MariaDB al sources listArchivo.
+
+sudo add-apt-repository 'deb [arch=amd64] http://mariadb.mirror.globo.tech/repo/10.11/ubuntu jammy
+main'
+
+Refresca la caché local APT como se muestra.
+
+sudo apt update
+
+				Una vez que el índice de paquete se actualice, instale el servidor y el cliente MariaDB como se muestra.
+
+							sudo apt install mariadb-server mariadb-client -y
+
+				En este punto, el servidor MariaDB, junto al cliente, ha sido instalado con éxito. Puede confirmar la versión instalada de la siguiente manera.
+
+							mariadb --version
+
+Paso 3: Servidor de base de datos de MariaDB segura
+
+					La instalación predeterminada de MariaDB viene con ajustes débiles, que plantean riesgos potenciales para sus bases de datos. Por lo tanto, realizar algunas operaciones de endurecimiento para asegurar su servidor de bases de datos es muy recomendable.
+
+					Para mejorar la seguridad de MariaDB, ejecute el guión de seguridad, que se incluye como parte de la instalación de MariaDB.
+
+					sudo mysql_secure_installation
+
+					El guión te acompa lleva a través de un par de avisos.
+
+		El primer aviso pide la contraseña raíz de la base de datos. Por defecto, MariaDB viene con una cuenta raíz de base de datos. Se trata de una cuenta administrativa con privilegios absolutos sobre las bases de datos. Tenga en cuenta que esta cuenta es diferente de la cuenta raíz del sistema.
+
+		Por defecto, la contraseña raíz está en blanco ya que la instalación es fresca y no se han realizado cambios de configuración. Así que, prensa. ENTERa proceder.
+
+			A continuación, se le pedirá que establezca la contraseña raíz cambiando a la unix_socketautenticación, que es la autenticación por defecto para MariaDB. Permite a otros usuarios utilizar credenciales del sistema operativo cuando se accede a MariaDB usando el archivo local de enchufa Unix. Esto puede suponer un riesgo de seguridad si uno de los usuarios es comprometido por un atacante o si los usuarios tienen contraseñas débiles. Para estar a salvo, declinando presionando ny golpear ENTER.
+
+		A continuación, asegúrese de proporcionar una fuerte contraseña raíz de la base de datos y confirmarla.
+
+		Como siguiente paso, presie 'Y' para que los avisos restantes acepten las opciones predeterminadas, esto elimina un usuario anónimo predeterminado que permitiría a cualquiera iniciar sesión sin una cuenta de usuario, desautoriza el inicio de sesión de raíz remota, elimina la base de datos de prueba y finalmente recarga las tablas de privilegios para guardar los cambios.
+
+Paso 4:Instalar módulos PHP y PHP
+
+		El último componente de la pila LAMP es instalar PHP. Ubuntu 22.04 ya proporciona PHP 8.1 en su repositorio. Puede instalarlo de la siguiente manera.
+
+				sudo apt install php -y
+
+		Sin embargo, PHP 8.2 es la última versión estable de PHP en el momento de escribir esta guía. Para tener esta versión, es necesario instalarlo desde el PPA Ondrej Sury. Es un repositorio que proporciona las últimas versiones de PHP, como la serie PHP 8.x.
+
+		De vuelta en la línea de comandos, agregue el PP de Ondrej como se muestra.
+
+				sudo add-apt-repository ppa:ondrej/php
+
+		Cuando se le pida que continúe, pulse ENTER. El comando añade el repositorio de OndreJ a la /etc/apt/sources.list.dDirectorio y la clave de ficha de GPG.
+
+		A continuación, instale PHP 8.2 utilizando el gestor de paquetes APT.
+
+				sudo apt install php8.2 -y
+
+				php --version
+
+		Para instalar algunas extensiones:   sudo apt install php8.2-{mbstring,mysql,zip} -y
+
+		Para listar todos los módulos PHP instalados, ejecute el comando:
+
+						php -m
+
+Paso 5: Prueba de instalación PHP desde un navegador.
+
+		Ya hemos visto cómo comprobar la versión de PHP instalada en la línea de comandos. También puede verificar la instalación de PHP desde un navegador usando los siguientes sencillos pasos.
+
+		Primero, crear un info.phparchivo que muestra detalles completos sobre la configuración de su sitio.
+
+					sudo nano  /var/www/html/info.php
+
+A continuación, pegar las siguientes líneas.
+
+					<php?
+						phpinfo()
+					?>
+
+
+		El phpinfo()es una función que muestra la configuración PHP de su sitio, incluyendo la versión PHP, el entorno del sistema operativo, información de encabezado, etc.
+
+		Guarde los cambios y salga del archivo. A continuación, visite la URL del servidor
+
+			http://server-ip/info.php ----------> La página de configuración de PHP se mostrará en el navegador.
+	
+
+Paso 6: Configurar el host virtual Apache [opcional]
+
+			El servidor web Apache proporciona un diseño modular que le permite alojar varios dominios o sitios web utilizando hosts virtuales. El alojamiento virtual es un concepto que le permite alojar varios sitios web en un solo servidor. Un archivo de host virtual es un archivo de configuración que define el dominio alojado en el servidor. También define la ruta de los archivos del sitio web de dominios y otros parámetros cruciales.
+
+			En esta sección, configuraremos un Apache virtual para nuestro dominio.
+
+			Para empezar, cree un directorio de sitio web para su dominio en el /var/www/camino.
+
+				sudo mkdir -p /var/www/domain.com
+
+
+			A continuación, asigne la siguiente propiedad de directorio.
+
+				sudo chown -R $USER:$USER /var/www/domain.com
+
+			El $USERel entorno especifica el usuario actualmente registrado. Esto implica que el directorio de la página web será propiedad del usuario de la sesión y no de raíz.
+
+			A continuación, asigne permisos de directorio.
+
+					sudo chmod -R 755 /var/www/domain.com
+
+			Encladándote, cree un archivo html de muestra dentro del directorio del sitio web. Esto se utilizará para probar que el huésco virtual está funcionando. Así que, crea un index.htmlarchivo usando el editor de texto preferido. En este caso, estamos usando nanoeditor.
+
+					sudo nano /var/www/domain.com/index.html
+
+
+			Salvar y salir. A continuación, cree un archivo de configuración de host virtual en el /etc/apache2/sites-available/Directorio.
+
+					sudo nano /etc/apache2/sites-available/domain.com.conf
+
+			Pegue las siguientes lineas y guarde los cambios.
+
+					<VirtualHost *:80>
+						    ServerAdmin webmaster@localhost
+    						ServerName domain.com
+   	 						ServerAlias www.domain.com
+   	 						DocumentRoot /var/www/domain.com
+    						ErrorLog ${APACHE_LOG_DIR}/error.log
+    						CustomLog ${APACHE_LOG_DIR}/access.log combined
+					</VirtualHost>
+
+			Una vez hecho, guarde y cierre el archivo. A continuación, habilitar el sitio de host virtual utilizando el a2ensiteherramienta.
+
+				sudo a2ensite domain.com.conf
+
+			Para asegurarse de que la configuración de Apache es correcta, ejecute el comando:
+
+				sudo apache2ctl configtest
+
+			Finalmente, reinicie Apache para aplicar todos los cambios realizados.
+
+				sudo systemctl restart apache2
+
+			Ahora verifica que su nombre de dominio está siendo servido por Apache visitando la URL de su dominio
+
+						http://www.domain.com
+
+			Si todo va bien, debe obtener la siguiente página web, una confirmación de que la configuración del host virtual está funcionando.
+
+			La pila LAMP es un paquete de software popular entre los desarrolladores para la construcción de aplicaciones web de soporte completo; esta guía le enseñó cómo instalar LAMP en Ubuntu 22.04. Además, has aprendido cómo alojar varios dominios en el mismo servidor configurando los hosts virtuales Apache.
+
+			
+
+			
+
+
+
+--------------------------------------------------------
 Instalacion de Xampp en ubuntu: 
 
 Descargamos xampp primero. Luego desde descarga, abrimos terminal:
