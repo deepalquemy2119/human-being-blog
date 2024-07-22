@@ -1,63 +1,3 @@
-Composer: manejador de paquetes para PHP,( como Nodejs, o Bundler en Ruby ).
-
-Comandos Composer:  composer init 
-					composer install
-					composer update
-				por ej: $ composer update vendor/package another-vendor/another-package vendor-x/package-x
-
-	Esto sólo actualizará las dependencias especificadas, si quieres actualizar todas las dependencias de un cierto paquete puede ahorrar muchos caracteres utilizando un comodín *, de la siguiente manera: 
-
-			composer update vendor-x/*
-
-	El comando require instala las dependencias especificadas, este lo explicaré más detalladamente en el siguiente tutorial, la sintaxis es la siguiente:
-
-			composer require vendor/package
-
-	El comando search busca el paquete indicado en Packagist, sólo tienes que pasarle el nombre del paquete.
-
-			php composer search monolog
-
-El comando show muestra los paquetes disponibles y también puedes ver los detalles de un paquete en específico. Basta con pasarle un argumento, este tiene que ser el nombre del paquete:
-
-			php composer show vendor/package
-
-El comando depends muestra la lista de paquetes de los cuales depende el paquete indicado. Sí, me estoy refiriendo a las librerías de terceros. Muestra los paquetes de tipo require y require-dev
-
-			php composer depends vendor/package
-
-Para asegurarnos que nuestro archivo composer.json está escrito correctamente y que alguno no tendrá errores al descargarlo y tampoco tener problemas al instalar las dependencias, como algún carácter mal escrito, podemos utilizar el comando validate para verificar que todo está correctamente bien.
-
-			php composer validate
-
-Para ver el status de un paquete:  php composer status -v
-
-Para actualizar composer: php composer self-update
-
-El comando config te permite editar varias opciones de Composer, tanto en el archivo local del proyecto como en el archivo global.
-
-$ php composer config --list
-
-El comando create-project crea un nuevo proyecto, es necesario pasar como parámetros el vendor y package correspondiente. Esto es lo mismo que descargar el proyecto y después ejecutar el archivo composer.json que venga en él, el siguiente ejemplo crea un proyecto de laravel.
-
-		php composer create-project laravel/laravel mi-proyecto
-
-Ahora, si necesitas actualizar tu archivo autoloader porque tienes nuevas clases puedes hacerlo con el comando dump-autoload, es como ejecutar install o update, pero la ventaja es que puedes especificar que se cree un arreglo de todas las clases del proyecto con sus respectivos archivos, de la siguiente manera:
-
-$ php composer dump-autoload --optimize
-
-El comando run-script permite ejecutar manualmente alguno de los scripts definidos por algún paquete.
-
-$ php composer run-script nombre-script --no-dev
-
-Hemos agregado --no-dev para desactivar el modo de desarrollo.
-
-Utiliza el comando help para ver información sobre el comando solicitado.
-
-$ php composer help install
-
-Utiliza el comando help para ver información sobre el comando solicitado.
-
-$ php composer help install
 --------------------------------------------------------
 Instalacion pila LAMP: ( no es lo mismo que lampp, que es de Xampp ).
 
@@ -156,6 +96,10 @@ sudo add-apt-repository 'deb [arch=amd64] http://mariadb.mirror.globo.tech/repo/
 main'
 
 Refresca la caché local APT como se muestra.
+
+-----------------------
+Para kill proccess de cache: sudo fuser -vki /var/lib/dpkg/lock
+-----------------------
 
 sudo apt update
 
@@ -678,6 +622,66 @@ DB_PASSWORD=240208
 php artisan migrate
 
 para ver la app:   		php artisan server
----------------------------------------------------------
+----------------------------------------
 
-BLOG-LARAVEL
+Composer: manejador de paquetes para PHP,( como Nodejs, o Bundler en Ruby ).
+
+Comandos Composer:  composer init 
+					composer install
+					composer update
+				por ej: $ composer update vendor/package another-vendor/another-package vendor-x/package-x
+
+	Esto sólo actualizará las dependencias especificadas, si quieres actualizar todas las dependencias de un cierto paquete puede ahorrar muchos caracteres utilizando un comodín *, de la siguiente manera: 
+
+			composer update vendor-x/*
+
+	El comando require instala las dependencias especificadas, este lo explicaré más detalladamente en el siguiente tutorial, la sintaxis es la siguiente:
+
+			composer require vendor/package
+
+	El comando search busca el paquete indicado en Packagist, sólo tienes que pasarle el nombre del paquete.
+
+			php composer search monolog
+
+El comando show muestra los paquetes disponibles y también puedes ver los detalles de un paquete en específico. Basta con pasarle un argumento, este tiene que ser el nombre del paquete:
+
+			php composer show vendor/package
+
+El comando depends muestra la lista de paquetes de los cuales depende el paquete indicado. Sí, me estoy refiriendo a las librerías de terceros. Muestra los paquetes de tipo require y require-dev
+
+			php composer depends vendor/package
+
+Para asegurarnos que nuestro archivo composer.json está escrito correctamente y que alguno no tendrá errores al descargarlo y tampoco tener problemas al instalar las dependencias, como algún carácter mal escrito, podemos utilizar el comando validate para verificar que todo está correctamente bien.
+
+			php composer validate
+
+Para ver el status de un paquete:  php composer status -v
+
+Para actualizar composer: php composer self-update
+
+El comando config te permite editar varias opciones de Composer, tanto en el archivo local del proyecto como en el archivo global.
+
+$ php composer config --list
+
+El comando create-project crea un nuevo proyecto, es necesario pasar como parámetros el vendor y package correspondiente. Esto es lo mismo que descargar el proyecto y después ejecutar el archivo composer.json que venga en él, el siguiente ejemplo crea un proyecto de laravel.
+
+		php composer create-project laravel/laravel mi-proyecto
+
+Ahora, si necesitas actualizar tu archivo autoloader porque tienes nuevas clases puedes hacerlo con el comando dump-autoload, es como ejecutar install o update, pero la ventaja es que puedes especificar que se cree un arreglo de todas las clases del proyecto con sus respectivos archivos, de la siguiente manera:
+
+$ php composer dump-autoload --optimize
+
+El comando run-script permite ejecutar manualmente alguno de los scripts definidos por algún paquete.
+
+$ php composer run-script nombre-script --no-dev
+
+Hemos agregado --no-dev para desactivar el modo de desarrollo.
+
+Utiliza el comando help para ver información sobre el comando solicitado.
+
+$ php composer help install
+
+Utiliza el comando help para ver información sobre el comando solicitado.
+
+$ php composer help install
+-----------------------------------------------------------------
